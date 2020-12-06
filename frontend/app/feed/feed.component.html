@@ -1,0 +1,80 @@
+<div *ngFor="let post of feed; let i = index">
+    <div class="body">
+        <div class="feed">
+            <div class="main_container">
+                <div class="title">
+                    {{ feed[feed.length - i - 1].title }}
+                </div>
+                <div class="date">
+                    {{ feed[feed.length - i - 1].date | dateFormatAgo }}
+                </div>
+                <div class="author_name">
+                    {{feed[feed.length - i - 1].user.username}}
+                </div>
+                <div class="author_stats">
+                    <!--{{feed[i].user.profile.number_of_posts | postText}}
+                    {{feed[i].user.profile.number_of_followers | followerText}}-->
+                </div>
+                <div [ngClass]="{fallow_active: followsUser.get(post.user.id) === 1,
+                        fallow: followsUser.get(post.user.id) === 0}" (click)="followUser(post.user.id)">
+                        Follow
+                </div>
+                
+                <img class="author_photo" src="{{ feed[feed.length - i - 1].user.profile.photo}}" alt="">
+                <div class="star_name">
+                    {{feed[feed.length - i - 1].star.first_name}}
+                    {{feed[feed.length - i - 1].star.last_name}}
+                </div>
+                <div class="star_stats">
+                    <!--{{feed[i].star.number_of_posts | photoText}}
+                    {{feed[i].star.number_of_followers | followerText}}-->
+                </div>
+                <div [ngClass]="{go_after_active: followsStar.get(feed[feed.length - i - 1].star.id) === 1,
+                        go_after: followsStar.get(feed[feed.length - i - 1].star.id) === 0}" (click)="followStar(feed[feed.length - i - 1].star.id)">
+                        Go after
+                </div>
+                <div class="star_photo">
+                    <img class="profile_photo" src="{{feed[feed.length - i - 1].star.photo.photo}}" alt="">
+                </div>
+                <div class="feed_photo" >
+                    <img class="post_photo" src="{{ feed[feed.length - i - 1].photo }}" alt="">
+                </div>
+                <div class="stats_bar">
+                    <div [ngClass]="{like_active: likes.get(feed[feed.length - i - 1].id) === 1,
+                        like: likes.get(feed[feed.length - i - 1].id) === 0}" (click)="like(feed[feed.length - i - 1].id, feed.length - i - 1)">
+                        UP!
+                    </div>
+                    <div class="number_of_likes">{{feed[feed.length - i - 1].number_of_likes}}</div>
+                    <div [ngClass]="{dislike_active: dislikes.get(feed[feed.length - i - 1].id) === 1,
+                            dislike: dislikes.get(feed[feed.length - i - 1].id) === 0}" (click)="dislike(feed[feed.length - i - 1].id, feed.length - i - 1)">
+                        DOWN!
+                    </div>
+                    <div class="number_of_dislikes">{{feed[feed.length - i - 1].number_of_dislikes}}</div>
+                    <div class="share">
+                        SHARE
+                    </div>
+                    <div [ngClass]="{save_active: savedList.get(feed[feed.length - i - 1].id) === 1,
+                        save: savedList.get(feed[feed.length - i - 1].id) === 0}" (click)="saveRemove(feed[feed.length - i - 1].id)">
+                        SAVE 
+                    </div>
+                </div>
+                <div class="comment_conteiner">
+                    <form class="write_comment" [formGroup]="commentForm" (ngSubmit)="onSubmit(commentForm.value, feed[feed.length - i - 1].id, feed.length - i - 1)">
+                        <textarea class="comment_box" rows=3 maxlength=250 id="comment" formControlName="comment"></textarea>
+                        <button class="comment_button" name="submit">Write a comment</button>
+                    </form>
+                    <div class="comments" *ngFor="let comment of feed[feed.length - i - 1].users_comments| slice:0:3; let f = index">
+
+                            <div class="comment_text">
+                                <b>{{feed[feed.length - i - 1].users_comments[feed[feed.length - i - 1].users_comments.length - f - 1].user.username}}: </b>{{feed[feed.length - i - 1].users_comments[feed[feed.length - i - 1].users_comments.length - f - 1].comment}}
+                            </div>
+                            <div class="c_date">
+                                {{ feed[feed.length - i - 1].users_comments[feed[feed.length - i - 1].users_comments.length - f - 1].date | dateFormatAgo }}
+                            </div>
+                    </div>
+                    <div class="comments_more">***</div>
+                </div>
+            </div>  
+        </div>
+    </div>
+</div>
